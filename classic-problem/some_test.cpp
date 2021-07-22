@@ -270,6 +270,47 @@ void TestVirtualTable() {
     system("ls -l ./; pwd");
 }
 
+class Test {
+public:
+//    Test() : y(1), r(y), d(3), xx(5) {}     // error: const int Test::xx is a static data member; it can only be initialized at its definition
+    Test() : y(1), r(y), d(3) {}            // 对于常量型成员变量和引用型成员变量，必须通过参数化列表的方式进行初始化。
+    ~Test() {}
+
+//    static void testStaticFun()
+//    {
+//        cout << "y = " << y << endl;            //Error:静态成员函数不能访问非静态成员
+//    }
+
+    void testFun() {
+        ++x2;
+        cout << "x2 = " << x2 << endl;
+    }
+
+    int y;      //普通变量成员
+    int &r;     //引用成员变量
+    const int d;    //常量成员变量
+    static int c;   //静态成员变量
+    static const int x = 2.1;   //静态常量整型成员变量
+//    static int x2 = 1;          // error: ISO C++ forbids in-class initialization of non-const static member Test::x2
+    static int x2;
+    static const int xx;        //静态常量整型成员变量声明
+    static const double z;  //静态常量非整型成员变量声明
+    static constexpr const float zz = 1.998;    //静态常量非整型成员变量
+};
+const int Test::xx = 4;     // 静态常量整型成员变量定义
+int Test::x2 = 4;     // 静态常量整型成员变量定义
+const double Test::z = 5.1; // 静态常量非整型成员变量定义
+int Test::c = 2;
+//constexpr const float Test::zz = 12.223;  // error: duplicate initialization of Test::zz
+void TestStatic() {
+    cout << Test::x << endl;
+    cout << Test::zz << endl;
+    cout << "Test::x2 = " << Test::x2 << endl;
+    Test t;
+    t.testFun();
+    cout << "Test::x2 = " << Test::x2 << endl;
+}
+
 int main() {
     TimerClock tc(true);
 //    TestFunPtr();
@@ -279,8 +320,9 @@ int main() {
 //    TestIntAddOverFlow();
 //    TestFloatBigSubBig();
 //    TestConstPtr();
-    TestCPlusPlusInherit();
+//    TestCPlusPlusInherit();
 //    TestVirtualTable();
+    TestStatic();
 
     return 0;
 }
