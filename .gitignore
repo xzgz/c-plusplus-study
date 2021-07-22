@@ -1,0 +1,7 @@
+cmake*/*
+build*/*
+previous-code/*
+*.o
+*.a
+*.so
+.idea/
